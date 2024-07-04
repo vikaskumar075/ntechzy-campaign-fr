@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -24,6 +24,50 @@ export default function SelectAutoWidth() {
   const [link, setLink] = useState("");
   const [linkVisible, setLinkVisible] = useState(false); // State to control link visibility
   const [MobileNumber,setMobileNumber]=useState("");
+  let ugeneratedLink="";
+
+  const iframeRef = useRef(null);
+
+  useEffect(() => {
+    // Function to handle iframe load
+    const handleIframeLoad = () => {
+      // Access the iframe element
+      const iframe = document.getElementById('myIframe');
+console.log("function me hun mai");
+// console.log(iframe, iframe.contentWindow.document.getElementById('guardianName'), "QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
+      // Check if iframe exists and is loaded
+      if (iframe && iframe.contentDocument) {
+        // Access the div inside the iframe by id
+        // const divInsideIframe = iframe.contentDocument.getElementById('guradianName');
+        const divInsideIframe = iframe.contentDocument
+        console.log(divInsideIframe, 'aB TO AAJA');
+
+        if (divInsideIframe) {
+          // Do something with the div inside the iframe
+          console.log(divInsideIframe.textContent,"name of guardkian");
+        }
+      }
+    };
+
+    // Add event listener for iframe load
+    const iframeElement = document.getElementById('myIframe');
+    console.log(iframeElement, "iframe");
+    if (iframeElement && ulink) {
+
+      console.log(iframeElement, ulink, "hmmmm bc");
+      
+      iframeElement.addEventListener('load', handleIframeLoad);
+    }
+
+    // Cleanup: remove event listener
+    return () => {
+      if (iframeElement) {
+        iframeElement.removeEventListener('load', handleIframeLoad);
+      }
+    };
+  }, [ulink]);
+
+  
 
   function jumbleStrings(str1, str2) {
     const combinedStr = str1 + str2;
@@ -36,6 +80,10 @@ export default function SelectAutoWidth() {
   
     return jumbledArr.join('');
   }
+  
+  const meradiv = window.document.getElementById('guardianName')
+console.log(meradiv, "mera hi rahega");
+
   const handleMainSelectionChange = (e) => {
     setMainSelection(e.target.value);
     // Reset other fields when main selection changes
@@ -62,12 +110,29 @@ export default function SelectAutoWidth() {
   const handleNameChange = (e,name,MobileNumber) => {
     setName(e.target.value);
   };
-
+  const passjumb=jumbleStrings(name,MobileNumber);
   const handleSubmit = async (e,) => {
     e.preventDefault();
-    const passjumb=jumbleStrings(name,MobileNumber);
-console.log(name);
-console.log(MobileNumber);
+
+
+    const iframe = iframeRef.current;
+
+    if (iframe) {
+      // Wait for iframe to load
+      iframe.onload = () => {
+        // Access the contentDocument of the iframe
+        const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+        
+        // Example: Query input element by id in the iframe
+        const inputValue = iframeDocument.getElementById('guardianName').value;
+        
+        // Use the value retrieved from the iframe
+        console.log('Input value from iframe:', inputValue);
+      };
+    }
+  
+// console.log(name);
+// console.log(MobileNumber);
     // Replace spaces with underscores in inputs
     // const sanitizedChannelName = channelName.replace(/ /g, "_");
     const sanitizedName = name.replace(/ /g, "_");
@@ -84,16 +149,19 @@ console.log(MobileNumber);
         });
 
         campaignId = response.data.platformCount;
-        console.log("campaignId:", campaignId);
+        // console.log("campaignId:", campaignId);
       } else {
+
+
+
         const response = await axios.post("http://localhost:5000/api/save-remain", {
-          username: sanitizedName || sanitizedChannelName,
+          username: sanitizedName,
           whoIAm: mainSelection,
         });
 
         if (response.data.success) {
           toast.success(response.data.message);
-          console.log(response.data.message);
+          // console.log(response.data.message);
           setLinkVisible(true); // Show link only if data was successfully saved
         } else {
           toast.error(response.data.message);
@@ -104,8 +172,8 @@ console.log(MobileNumber);
 
       // Generate link based on the inputs
       let generatedLink = "";
-      let ugeneratedLink="";
-      // let phoneId=MobileNumber;
+        
+     
       const selectedMedium = data.find((item) => item.name === medium);
 
       if (mainSelection === "campaign") {
@@ -128,21 +196,22 @@ console.log(MobileNumber);
             generatedLink = `https://ntechzy.in/?utm_source=${selectedMedium ? selectedMedium.clg : ""}&campaign_id=${campaignId}`;
         }
       }
-       else if (["faculty", "student", "agent", "offline","influencer"].includes(mainSelection)) {
+      else if (["faculty", "student", "agent", "offline","influencer"].includes(mainSelection)) {
+        
         var sourceAbbreviation = mainSelection.slice(0, 3).toLowerCase();
+        ugeneratedLink = `https://ntechzy.in/?u_name=${sourceAbbreviation}_${sanitizedName}_${MobileNumber}&u_pass=${passjumb}`;
         generatedLink = `https://ntechzy.in/?utm_source=${sourceAbbreviation}_${sanitizedName}&campaign_id=0`;
-        ugeneratedLink = `https://ntechzy.in/?utm_source=${sourceAbbreviation}_${sanitizedName}&campaign_id={passjumb}`;
       } else {
         generatedLink = `https://ntechzy.in/?utm_source=${mainSelection}&campaign_id=0`;
       }
       console.log(jumbleStrings(name,MobileNumber));
     
-      console.log(e.target.value);
+      
       // console.log("link hai ye ",link);
-      console.log("Generated Link:", generatedLink);
+      // console.log("Generated Link:", generatedLink);
       setLink(generatedLink); // Set the generated link in the state
       setULink(ugeneratedLink);
-      console.log("after set ",link);
+      // console.log("after set ",link);
       } catch (error) {
       console.error("Error fetching campaign ID:", error.message);
     }
@@ -267,37 +336,40 @@ console.log(MobileNumber);
       <Button variant="contained" type="submit" sx={{ mt: 2 }}>
         Submit
       </Button>
-      {/*<iframe src="https://ntechzy.in" width={300} height={400} frameborder="0"></iframe>*/} 
-
-      {linkVisible && (
+      {console.log(ulink, "yahi hai")}
+      {  linkVisible && (
         <Paper
-          elevation={3}
-          sx={{
-            mt: 2,
-            p: 2,
-            display: "flex",
-            alignItems: "center",
-            borderRadius: "10px",
-            width: "80%",
-          }}
+        elevation={3}
+        sx={{
+          mt: 2,
+          p: 2,
+          display: "flex",
+          alignItems: "center",
+          borderRadius: "10px",
+          width: "80%",
+        }}
         >
           <Typography
             variant="body1"
             sx={{ flexGrow: 1, overflowWrap: "break-word" }}
-          >
+            >
           {console.log(link)}
             <a href={link} target="_blank" rel="noopener noreferrer">
               {link}
             </a>
-            <a href={ulink} target="_blank" rel="noopener noreferrer">
-              {ulink}
-            </a>
+            {console.log(ulink)}
           </Typography>
           <IconButton onClick={handleCopyLink}>
             <ContentCopyIcon />
           </IconButton>
         </Paper>
       )}
+      {ulink && <div>
+        <h3>Login to  <code>ntechzy.in/login</code></h3>
+        <code>id: {MobileNumber}</code><br />
+        <code>passwd : {passjumb}</code>
+        </div>}
+<iframe id="myIframe" ref={iframeRef} src={ulink} title="ntech" frameborder="0" style={{marginTop:'50px'}}></iframe> 
     </Box>
   );
 }
