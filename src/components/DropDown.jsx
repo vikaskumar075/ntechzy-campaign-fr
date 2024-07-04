@@ -143,7 +143,7 @@ console.log(meradiv, "mera hi rahega");
       let campaignId = 0;
 
       if (mainSelection === "campaign") {
-        const response = await axios.post("http://localhost:5000/api/save-medium", {
+        const response = await axios.post("https://ntechzy-campaign-bk.vercel.app/api/save-medium", {
           medium: sanitizedMedium,
           platform,
         });
@@ -154,7 +154,7 @@ console.log(meradiv, "mera hi rahega");
 
 
 
-        const response = await axios.post("http://localhost:5000/api/save-remain", {
+        const response = await axios.post("https://ntechzy-campaign-bk.vercel.app/api/save-remain", {
           username: sanitizedName,
           whoIAm: mainSelection,
         });
