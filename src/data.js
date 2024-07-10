@@ -31,7 +31,7 @@ export  const data=[
     },
     {
         "name": "Bapu Ayurvedic Medical College , Mau",
-        "clg": "Bapu",
+        "clg": "bamch.in",
        
     },
     {

@@ -25,57 +25,16 @@ export default function SelectAutoWidth() {
   const [linkVisible, setLinkVisible] = useState(false); // State to control link visibility
   const [MobileNumber, setMobileNumber] = useState("");
   const [collgVal, setCollgVal] = useState("");
+  const [password, setPassword] = useState("");
   let ugeneratedLink = "";
 
-  // const iframeRef = useRef(null);
-  const navigate = useNavigate(); // Initialize useHistory hook for navigation
+  const navigate = useNavigate();
 
-  // Existing state and functions...
 
   const handleLoginClick = () => {
-    // Navigate to login page
-    navigate("/login")// Replace '/login' with your actual login page route
+    navigate("/login") // '/login' with your actual login page route
   };
 
-
-  //   useEffect(() => {
-  //     // Function to handle iframe load
-  //     const handleIframeLoad = () => {
-  //       // Access the iframe element
-  //       const iframe = document.getElementById('myIframe');
-  // console.log("function me hun mai");
-  // // console.log(iframe, iframe.contentWindow.document.getElementById('guardianName'), "QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
-  //       // Check if iframe exists and is loaded
-  //       if (iframe && iframe.contentDocument) {
-  //         // Access the div inside the iframe by id
-  //         // const divInsideIframe = iframe.contentDocument.getElementById('guradianName');
-  //         const divInsideIframe = iframe.contentDocument
-  //         console.log(divInsideIframe, 'aB TO AAJA');
-
-  //         if (divInsideIframe) {
-  //           // Do something with the div inside the iframe
-  //           console.log(divInsideIframe.textContent,"name of guardkian");
-  //         }
-  //       }
-  //     };
-
-  //     // Add event listener for iframe load
-  //     const iframeElement = document.getElementById('myIframe');
-  //     console.log(iframeElement, "iframe");
-  //     if (iframeElement && ulink) {
-
-  //       console.log(iframeElement, ulink, "hmmmm bc");
-
-  //       iframeElement.addEventListener('load', handleIframeLoad);
-  //     }
-
-  //     // Cleanup: remove event listener
-  //     return () => {
-  //       if (iframeElement) {
-  //         iframeElement.removeEventListener('load', handleIframeLoad);
-  //       }
-  //     };
-  //   }, [ulink]);
 
   function jumbleStrings(str1, str2) {
     const combinedStr = str1 + str2;
@@ -118,36 +77,17 @@ export default function SelectAutoWidth() {
   const handleNameChange = (e) => {
     setName(e.target.value);
   };
-  const passjumb = jumbleStrings(name, MobileNumber);
+  // const passjumb = jumbleStrings(name, MobileNumber);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // const iframe = iframeRef.current;
-
-    // if (iframe) {
-    //   // Wait for iframe to load
-    //   iframe.onload = () => {
-    //     // Access the contentDocument of the iframe
-    //     const iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
-
-    //     // Example: Query input element by id in the iframe
-    //     const inputValue = iframeDocument.getElementById('guardianName').value;
-
-    //     // Use the value retrieved from the iframe
-    //     console.log('Input value from iframe:', inputValue);
-    //   };
-    // }
-
-    // console.log(name);
-    // console.log(MobileNumber);
-    // Replace spaces with underscores in inputs
-    // const sanitizedChannelName = channelName.replace(/ /g, "_");
 
 
     const sanitizedName = name.replace(/ /g, "_");
     const sanitizedMedium = medium.replace(/ /g, "_");
     // jumbleStrings()
+    const passjumb = jumbleStrings(name, MobileNumber);
+    setPassword(passjumb);
 
     try {
       let campaignId = 0;
@@ -173,7 +113,7 @@ export default function SelectAutoWidth() {
             whoIAm: mainSelection,
           }
         );
-
+        
         if (response.data.success) {
           toast.success(response.data.message);
           // console.log(response.data.message);
@@ -186,31 +126,31 @@ export default function SelectAutoWidth() {
       }
       else {
         // const response = await axios.post("https://ntechzy-campaign-bk.vercel.app/api/save-remain", {
-        const response = await axios.post(
-          "http://localhost:5000/api/save-remain",
-          {
-            username: sanitizedName,
-            MobileNumber,
-            whoIAm: mainSelection,
-          }
-        );
-
-        if (response.data.success) {
-          toast.success(response.data.message);
-          // console.log(response.data.message);
-          setLinkVisible(true); // Show link only if data was successfully saved
-        } else {
+          const response = await axios.post(
+            "http://localhost:5000/api/save-remain",
+            {
+              username: sanitizedName,
+              MobileNumber,
+              whoIAm: mainSelection,
+            }
+          );
+          
+          if (response.data.success) {
+            toast.success(response.data.message);
+            // console.log(response.data.message);
+            setLinkVisible(true); // Show link only if data was successfully saved
+          } else {
           toast.error(response.data.message);
           setLinkVisible(false); // Hide link if there was an error
           return;
         }
       }
-
+      
       // Generate link based on the inputs
       let generatedLink = "";
-
+      
       const selectedMedium = data.find((item) => item.name === medium);
-
+      
       if (mainSelection === "campaign") {
         setLinkVisible(true);
         console.log(`Platform: ${platform}`);
@@ -220,17 +160,17 @@ export default function SelectAutoWidth() {
               selectedMedium ? selectedMedium.clg : ""
             }&campaign_id=${campaignId}`;
             break;
-          case "instagram":
-            generatedLink = `https://ntechzy.in/?utm_source=ig_${
+            case "instagram":
+              generatedLink = `https://ntechzy.in/?utm_source=ig_${
+                selectedMedium ? selectedMedium.clg : ""
+              }&campaign_id=${campaignId}`;
+              break;
+              case "facebook":
+                generatedLink = `https://ntechzy.in/?utm_source=fb_${
               selectedMedium ? selectedMedium.clg : ""
             }&campaign_id=${campaignId}`;
             break;
-          case "facebook":
-            generatedLink = `https://ntechzy.in/?utm_source=fb_${
-              selectedMedium ? selectedMedium.clg : ""
-            }&campaign_id=${campaignId}`;
-            break;
-          case "googleads":
+            case "googleads":
             generatedLink = `https://ntechzy.in/?utm_source=ga_${
               selectedMedium ? selectedMedium.clg : ""
             }&campaign_id=${campaignId}`;
@@ -247,6 +187,7 @@ export default function SelectAutoWidth() {
       ) {
         var sourceAbbreviation = mainSelection.slice(0, 3).toLowerCase();
         ugeneratedLink = `https://ntechzy.in/?u_name=${sourceAbbreviation}_${sanitizedName}_${MobileNumber}&u_pass=${passjumb}`;
+        // console.log(ugeneratedLink);
         generatedLink = `https://ntechzy.in/?utm_source=${sourceAbbreviation}_${sanitizedName}&campaign_id=0`;
       } else if(mainSelection === "college"){
         var sourceAbbreviation = mainSelection.slice(0, 3).toLowerCase();
@@ -256,15 +197,11 @@ export default function SelectAutoWidth() {
       else {
         generatedLink = `https://ntechzy.in/?utm_source=${mainSelection}&campaign_id=0`;
       }
-      console.log(jumbleStrings(name, MobileNumber));
 
       // Open a popup window with a specified URL
       window.open(ugeneratedLink, "Popup Window", "width=400,height=200");
-      // console.log("link hai ye ",link);
-      // console.log("Generated Link:", generatedLink);
       setLink(generatedLink); // Set the generated link in the state
       setULink(ugeneratedLink);
-      // console.log("after set ",link);
     } catch (error) {
       console.error("Error fetching campaign ID:", error.message);
     }
@@ -439,7 +376,6 @@ export default function SelectAutoWidth() {
             <a href={link} target="_blank" rel="noopener noreferrer">
               {link}
             </a>
-            {console.log(ulink)}
           </Typography>
           <IconButton onClick={handleCopyLink}>
             <ContentCopyIcon />
@@ -453,7 +389,7 @@ export default function SelectAutoWidth() {
           </h3>
           <code>id: {MobileNumber}</code>
           <br />
-          <code>passwd : {passjumb}</code>
+          <code>passwd : {password}</code>
         </div>
       )}
       {/* Login Button */}

@@ -11,27 +11,41 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { useState } from "react";
-import {toast } from "react-toastify";
-// TODO remove, this demo shouldn't need to reset the theme.
-
+import { json, useNavigate } from "react-router-dom";
+import AuthContext from "../context/Auth/AuthContext";
 const defaultTheme = createTheme();
 
 const Login = () => {
-  const[email,setEmail]=useState("")
-  const[password,setPassword]=useState("")
+  const [isAuthenticated,setIsAuthentication]=useState(false)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate(); // useNavigate hook should be inside the component
+  
+  const {location, setLocation} = React.useContext(AuthContext)
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await axios.post("http://localhost:5000/api/auth/login", {
-      email,
-      password,
-    });
-    if(response.data.success){
-      toast.success(response.data.message);
-    }
-    else{
-      toast.error(response.data.message);
+    try {
+      const response = await axios.post("http://localhost:5000/api/auth/login", {
+        email,
+        password,
+        // phone
+      });
+   
+      if (response.data.success) {
+        setLocation(() => response.data.location)
+        navigate("/dashboard"); // Navigate to home page upon successful login
+
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+      alert("Error during login. Please try again.");
     }
   };
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -63,11 +77,11 @@ const Login = () => {
                   required
                   fullWidth
                   id="email"
-                  value={password}
                   label="Email Address"
                   name="email"
                   autoComplete="email"
-                  onChange={setEmail((e)=>e.target.value)}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -75,12 +89,12 @@ const Login = () => {
                   required
                   fullWidth
                   name="password"
-                  value={password}
                   label="Password"
                   type="password"
                   id="password"
-                  autoComplete="new-password"
-                  onChange={setPassword((e)=>e.target.value)}
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </Grid>
             </Grid>
@@ -92,11 +106,11 @@ const Login = () => {
             >
               Log in
             </Button>
-            <Grid container justifyContent="flex-end"></Grid>
           </Box>
         </Box>
       </Container>
     </ThemeProvider>
   );
 };
-export default Login
+
+export default Login;
