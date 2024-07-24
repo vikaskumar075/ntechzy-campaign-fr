@@ -188,11 +188,12 @@ export default function SelectAutoWidth() {
         var sourceAbbreviation = mainSelection.slice(0, 3).toLowerCase();
         ugeneratedLink = `https://ntechzy.in/?u_name=${sourceAbbreviation}_${sanitizedName}_${MobileNumber}&u_pass=${passjumb}`;
         // console.log(ugeneratedLink);
-        generatedLink = `https://ntechzy.in/?utm_source=${sourceAbbreviation}_${sanitizedName}&campaign_id=0`;
+        // generatedLink = `https://ntechzy.in/?utm_source=${sourceAbbreviation}_${sanitizedName}&campaign_id=${sourceAbbreviation}_${sanitizedName}`;
+        generatedLink = `https://ntechzy.in/?utm_source=${sourceAbbreviation}_${sanitizedName}&campaign_id=${sourceAbbreviation}_${sanitizedName}`;
       } else if(mainSelection === "college"){
         var sourceAbbreviation = mainSelection.slice(0, 3).toLowerCase();
         ugeneratedLink = `https://ntechzy.in/?u_name=${sourceAbbreviation}_${collgVal}_${MobileNumber}&u_pass=${passjumb}`;
-        generatedLink = `https://ntechzy.in/?utm_source=${sourceAbbreviation}_${collgVal}&campaign_id=0`; 
+        generatedLink = `https://ntechzy.in/?utm_source=${sourceAbbreviation}_${collgVal}&campaign_id=${sourceAbbreviation}_${collgVal}`; 
       }
       else {
         generatedLink = `https://ntechzy.in/?utm_source=${mainSelection}&campaign_id=0`;
