@@ -250,7 +250,7 @@ export default function SelectAutoWidth() {
           <MenuItem value="influencer">Influencer</MenuItem>
           <MenuItem value="faculty">Faculty</MenuItem>
           <MenuItem value="student">Student</MenuItem>
-          <MenuItem value="agent">Agent</MenuItem>
+          <MenuItem value="agent">Consultant</MenuItem>
           <MenuItem value="college">College</MenuItem>
         </Select>
       </FormControl>
@@ -288,9 +288,9 @@ export default function SelectAutoWidth() {
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              <MenuItem value="instagram">Instagram</MenuItem>
+              <MenuItem value="instagram">Instagram/Facebook</MenuItem>
               <MenuItem value="youtube">YouTube</MenuItem>
-              <MenuItem value="facebook">Facebook</MenuItem>
+              {/* <MenuItem value="facebook">Facebook</MenuItem> */}
               <MenuItem value="googleads">Google Ads</MenuItem>
             </Select>
           </FormControl>
