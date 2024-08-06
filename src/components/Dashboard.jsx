@@ -33,7 +33,7 @@ const Dashboard = () => {
   const getStudentData = async () => {
     try {
       const res = await axios.get(
-        "http://192.168.29.89:4000/api/v1/bookedSlot"
+        `${process.env.REACT_APP_NTECHZY}/api/v1/bookedSlot`
       );
       setStudentData(res.data);
     } catch (error) {

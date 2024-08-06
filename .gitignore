@@ -3,3 +3,5 @@
 # dependencies
 /node_modules
 /backend/.env
+/ntechzy-campaign-bk/.env
+/ntechzy-campaign-fr/.env

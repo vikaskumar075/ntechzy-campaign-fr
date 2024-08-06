@@ -31,6 +31,9 @@ export default function SelectAutoWidth() {
   const navigate = useNavigate();
 
 
+  const ntechzy_url = process.env.REACT_APP_NTECHZY
+
+
   const handleLoginClick = () => {
     navigate("/login") // '/login' with your actual login page route
   };
@@ -95,7 +98,7 @@ export default function SelectAutoWidth() {
       if (mainSelection === "campaign") {
         // const response = await axios.post("https://ntechzy-campaign-bk.vercel.app/api/save-medium", {
         const response = await axios.post(
-          "http://localhost:5000/api/save-medium",
+          `${process.env.REACT_APP_API_URL}/api/save-medium`,
           {
             medium: sanitizedMedium,
             platform,
@@ -106,7 +109,7 @@ export default function SelectAutoWidth() {
         // console.log("campaignId:", campaignId);
       } else if(mainSelection === "college"){
         const response = await axios.post(
-          "http://localhost:5000/api/save-remain",
+          `${process.env.REACT_APP_API_URL}/api/save-remain`,
           {
             username: collgVal,
             MobileNumber,
@@ -127,7 +130,7 @@ export default function SelectAutoWidth() {
       else {
         // const response = await axios.post("https://ntechzy-campaign-bk.vercel.app/api/save-remain", {
           const response = await axios.post(
-            "http://localhost:5000/api/save-remain",
+            `${process.env.REACT_APP_API_URL}/api/save-remain`,
             {
               username: sanitizedName,
               MobileNumber,
@@ -156,27 +159,27 @@ export default function SelectAutoWidth() {
         console.log(`Platform: ${platform}`);
         switch (platform) {
           case "youtube":
-            generatedLink = `https://ntechzy.in/?utm_source=yt_${
+            generatedLink = `${ntechzy_url}/?utm_source=yt_${
               selectedMedium ? selectedMedium.clg : ""
             }&campaign_id=${campaignId}`;
             break;
             case "instagram":
-              generatedLink = `https://ntechzy.in/?utm_source=ig_${
+              generatedLink = `${ntechzy_url}/?utm_source=ig_${
                 selectedMedium ? selectedMedium.clg : ""
               }&campaign_id=${campaignId}`;
               break;
               case "facebook":
-                generatedLink = `https://ntechzy.in/?utm_source=fb_${
+                generatedLink = `${ntechzy_url}/?utm_source=fb_${
               selectedMedium ? selectedMedium.clg : ""
             }&campaign_id=${campaignId}`;
             break;
             case "googleads":
-            generatedLink = `https://ntechzy.in/?utm_source=ga_${
+            generatedLink = `${ntechzy_url}/?utm_source=ga_${
               selectedMedium ? selectedMedium.clg : ""
             }&campaign_id=${campaignId}`;
             break;
           default:
-            generatedLink = `https://ntechzy.in/?utm_source=${
+            generatedLink = `${ntechzy_url}/?utm_source=${
               selectedMedium ? selectedMedium.clg : ""
             }&campaign_id=${campaignId}`;
         }
@@ -186,17 +189,17 @@ export default function SelectAutoWidth() {
         )
       ) {
         var sourceAbbreviation = mainSelection.slice(0, 3).toLowerCase();
-        ugeneratedLink = `https://ntechzy.in/?u_name=${sourceAbbreviation}_${sanitizedName}_${MobileNumber}&u_pass=${passjumb}`;
+        ugeneratedLink = `${ntechzy_url}/?u_name=${sourceAbbreviation}_${sanitizedName}_${MobileNumber}&u_pass=${passjumb}`;
         // console.log(ugeneratedLink);
-        // generatedLink = `https://ntechzy.in/?utm_source=${sourceAbbreviation}_${sanitizedName}&campaign_id=${sourceAbbreviation}_${sanitizedName}`;
-        generatedLink = `https://ntechzy.in/?utm_source=${sourceAbbreviation}_${sanitizedName}&campaign_id=${sourceAbbreviation}_${sanitizedName}`;
+        // generatedLink = `${ntechzy_url}/?utm_source=${sourceAbbreviation}_${sanitizedName}&campaign_id=${sourceAbbreviation}_${sanitizedName}`;
+        generatedLink = `${ntechzy_url}/?utm_source=${sourceAbbreviation}_${sanitizedName}&campaign_id=${sourceAbbreviation}_${sanitizedName}`;
       } else if(mainSelection === "college"){
         var sourceAbbreviation = mainSelection.slice(0, 3).toLowerCase();
-        ugeneratedLink = `https://ntechzy.in/?u_name=${sourceAbbreviation}_${collgVal}_${MobileNumber}&u_pass=${passjumb}`;
-        generatedLink = `https://ntechzy.in/?utm_source=${sourceAbbreviation}_${collgVal}&campaign_id=${sourceAbbreviation}_${collgVal}`; 
+        ugeneratedLink = `${ntechzy_url}/?u_name=${sourceAbbreviation}_${collgVal}_${MobileNumber}&u_pass=${passjumb}`;
+        generatedLink = `${ntechzy_url}/?utm_source=${sourceAbbreviation}_${collgVal}&campaign_id=${sourceAbbreviation}_${collgVal}`; 
       }
       else {
-        generatedLink = `https://ntechzy.in/?utm_source=${mainSelection}&campaign_id=0`;
+        generatedLink = `${ntechzy_url}/?utm_source=${mainSelection}&campaign_id=0`;
       }
 
       // Open a popup window with a specified URL
