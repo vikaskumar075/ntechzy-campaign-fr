@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
 import axios from "axios";
 import AuthContext from "../context/Auth/AuthContext";
+import toast from "react-hot-toast";
+
 
 const Dashboard = () => {
 
@@ -32,9 +34,18 @@ const Dashboard = () => {
 
   const getStudentData = async () => {
     try {
-      const res = await axios.get(
-        `${process.env.REACT_APP_NTECHZY}/api/v1/bookedSlot`
-      );
+      const res = await toast.promise(
+        axios.get(
+          `${process.env.REACT_APP_NTECHZY}/api/v1/bookedSlot`
+        ),
+
+        {
+          loading: "Fetching Data ...",
+          success: "Data fetched Successfully",
+          error: "Failed to fetch Data"
+        }
+
+      )
       setStudentData(res.data);
     } catch (error) {
       setStudentData([]);
@@ -49,9 +60,6 @@ const Dashboard = () => {
     console.log(location)
   }, [location])
 
-  // useEffect(() => {
-  //   console.log(studentData);
-  // }, [studentData]);
 
   return (
     <div className="flex h-screen">

@@ -13,6 +13,8 @@ import axios from "axios";
 import { useState } from "react";
 import { json, useNavigate } from "react-router-dom";
 import AuthContext from "../context/Auth/AuthContext";
+import toast from "react-hot-toast";
+
 const defaultTheme = createTheme();
 
 const Login = () => {
@@ -27,10 +29,19 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
-        email,
-        password,
-      });
+      const response = await toast.promise(
+        axios.post(`${process.env.REACT_APP_API_URL}/api/auth/login`, {
+         email,
+         password,
+       }),
+
+       {
+          loading: "Logging in ...",
+          success: "Logged in successfully",
+          error: "failed to login"
+       }
+
+      )
    
       if (response.data.success) {
         setLocation(() => response.data.location)
