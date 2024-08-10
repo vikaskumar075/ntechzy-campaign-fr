@@ -1,13 +1,21 @@
 import React, { useContext } from 'react';
 import Button from '@mui/material/Button';
 import AuthContext from '../context/Auth/AuthContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 
 const Sidebar = () => {
 
   const {location} = useContext(AuthContext)
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear session storage on logout
+    sessionStorage.clear();
+    navigate("/login");
+  };
   
   return (
     // <div className="w-64 bg-gray-100 p-5 h-screen">
@@ -50,10 +58,10 @@ const Sidebar = () => {
             Profile
           </Link>
         </li> */}
-        <li className="mb-5">
-          <Link to="/login" className="text-blue-600 hover:text-blue-700">
+        <li className="mb-5 text-blue-600 hover:text-blue-700 cursor-pointer" onClick={handleLogout}>
+          {/* <Link to="#" className="text-blue-600 hover:text-blue-700" onClick={handleLogout}> */}
             Logout
-          </Link>
+          {/* </Link> */}
         </li>
         <li>
           <Button variant="contained">

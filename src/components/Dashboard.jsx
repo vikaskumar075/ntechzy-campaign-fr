@@ -3,6 +3,7 @@ import Sidebar from "./Sidebar";
 import axios from "axios";
 import AuthContext from "../context/Auth/AuthContext";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 
 const Dashboard = () => {
@@ -10,11 +11,20 @@ const Dashboard = () => {
   const [studentData, setStudentData] = useState([]);
   const {location, setLocation} = useContext(AuthContext);
 
+  const navigate = useNavigate();
+
+  const formatDate = (dateString) => {
+    console.log(dateString)
+    const date = new Date(dateString);
+    const options = { day: 'numeric', month: 'short', year: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+  };
 
   const filterStudentData = studentData.filter((element) => {
     return element.location === location
   })
 
+  // console.log(filterStudentData)
 
   const today = new Date(); // Get today's date
   const todaysAppointments = filterStudentData.filter((appointment) => {
@@ -52,13 +62,36 @@ const Dashboard = () => {
     }
   };
 
-  useEffect(() => {
-    getStudentData();
-  }, []);
+  // useEffect(() => {
+  //   getStudentData();
+  // }, []);
 
   useEffect(() =>{
     console.log(location)
   }, [location])
+
+
+  useEffect(() =>{
+    const savedLocation = sessionStorage.getItem("location")
+    const isAuthenticated = sessionStorage.getItem("isAuthenticated")
+
+    if(savedLocation && isAuthenticated){
+      setLocation(savedLocation);
+    }
+
+    getStudentData();
+  }, [])
+
+
+
+  // useEffect(() => {
+  //   // Check if location (or another auth context value) is set
+  //   if (!location) {
+  //     navigate("/login");  // Redirect to login page if not authenticated
+  //   } else {
+  //     getStudentData();
+  //   }
+  // }, [location, navigate]);
 
 
   return (
@@ -97,7 +130,7 @@ const Dashboard = () => {
 
                   <p>NEET AIR: {appointment.neetAIR}</p> */}
 
-                  <p>Date to Visit: {appointment.DateToVisit}</p>
+                  <p>Date to Visit: {formatDate(appointment.DateToVisit)}</p>
                   <p>Location: {appointment.location}</p>
 
                   {/* <h4 className="text-lg font-bold">Remarks:</h4>
@@ -167,7 +200,7 @@ const Dashboard = () => {
 
                   <p>NEET AIR: {appointment.neetAIR}</p> */}
 
-                  <p>Date to Visit: {appointment.DateToVisit}</p>
+                  <p>Date to Visit: {formatDate(appointment.DateToVisit)}</p>
                   <p>Location: {appointment.location}</p>
                 </div>
               ))}

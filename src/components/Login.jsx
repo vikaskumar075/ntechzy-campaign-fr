@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { json, useNavigate } from "react-router-dom";
 import AuthContext from "../context/Auth/AuthContext";
 import toast from "react-hot-toast";
@@ -23,7 +23,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate(); // useNavigate hook should be inside the component
   
-  const {location, setLocation} = React.useContext(AuthContext)
+  const {location, setLocation} = useContext(AuthContext)
   
 
   const handleSubmit = async (e) => {
@@ -45,6 +45,9 @@ const Login = () => {
    
       if (response.data.success) {
         setLocation(() => response.data.location)
+
+        sessionStorage.setItem("location", response.data.location)
+        sessionStorage.setItem("isAuthenticated", true)
         navigate("/dashboard"); // Navigate to home page upon successful login
 
       } else {
@@ -55,6 +58,7 @@ const Login = () => {
       alert("Error during login. Please try again.");
     }
   };
+
 
 
   return (

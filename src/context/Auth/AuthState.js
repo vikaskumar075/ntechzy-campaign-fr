@@ -2,7 +2,7 @@ import React , { useState } from "react";
 import AuthContext from "./AuthContext";
 
 const AuthState = (props) =>{
-    const [location, setLocation] = useState("noida");
+    const [location, setLocation] = useState("");
 
     return (
         <AuthContext.Provider value={{location, setLocation}}>
