@@ -65,7 +65,7 @@ const Sidebar = () => {
         </li>
         <li>
           <Button variant="contained">
-            <Link to={`${process.env.REACT_APP_NTECHZY}/?utm_source=direct_visit&campaign_id=off_rec_${location}`}>
+            <Link to={`${process.env.REACT_APP_NTECHZY}/?utm_source=direct_visit&campaign_id=office_rec_${location}`}>
               Add Offline Visit
             </Link>
           </Button>

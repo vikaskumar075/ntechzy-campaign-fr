@@ -83,17 +83,6 @@ const Dashboard = () => {
   }, [])
 
 
-
-  // useEffect(() => {
-  //   // Check if location (or another auth context value) is set
-  //   if (!location) {
-  //     navigate("/login");  // Redirect to login page if not authenticated
-  //   } else {
-  //     getStudentData();
-  //   }
-  // }, [location, navigate]);
-
-
   return (
     <div className="flex h-screen">
       <Sidebar />
@@ -116,56 +105,9 @@ const Dashboard = () => {
 
                   <p>WhatsApp Number: {appointment.whatsappNumber}</p>
 
-                  {/* <p>Guardian Name: {appointment.guardianName}</p>
-
-                  <p>District: {appointment.district}</p>
-
-                  <p>State: {appointment.state}</p>
-
-                  <p>Course Selected: {appointment.courseSelected}</p>
-
-                  <p>Preferred College: {appointment.preferredCollege}</p>
-
-                  <p>NEET Score: {appointment.neetScore}</p>
-
-                  <p>NEET AIR: {appointment.neetAIR}</p> */}
-
                   <p>Date to Visit: {formatDate(appointment.DateToVisit)}</p>
                   <p>Location: {appointment.location}</p>
 
-                  {/* <h4 className="text-lg font-bold">Remarks:</h4>
-                  <ul>
-                    {Object.keys(appointment.remarks).map((followUp, index) => (
-                      <li key={index}>
-                        <h5 className="text-md font-bold">{followUp}</h5>
-
-                        <ul>
-                          {appointment.remarks[followUp].map(
-                            (remark, index) => (
-                              <li key={index}>
-                                <p>Subject: {remark.subject}</p>
-
-                                <p>Updated At: {remark.updatedAt}</p>
-
-                                {remark.additionalOption && (
-                                  <p>
-                                    Additional Option: {remark.additionalOption}
-                                  </p>
-                                )}
-
-                                {remark.preBookingAmount && (
-                                  <p>
-                                    Pre-Booking Amount:{" "}
-                                    {remark.preBookingAmount}
-                                  </p>
-                                )}
-                              </li>
-                            )
-                          )}
-                        </ul>
-                      </li>
-                    ))}
-                  </ul> */}
                 </div>
               ))}
             </div>
@@ -185,21 +127,6 @@ const Dashboard = () => {
                   <p>Email: {appointment.email}</p>
 
                   <p>WhatsApp Number: {appointment.whatsappNumber}</p>
-
-                  {/* <p>Guardian Name: {appointment.guardianName}</p>
-
-                  <p>District: {appointment.district}</p>
-
-                  <p>State: {appointment.state}</p>
-
-                  <p>Course Selected: {appointment.courseSelected}</p>
-
-                  <p>Preferred College: {appointment.preferredCollege}</p>
-
-                  <p>NEET Score: {appointment.neetScore}</p>
-
-                  <p>NEET AIR: {appointment.neetAIR}</p> */}
-
                   <p>Date to Visit: {formatDate(appointment.DateToVisit)}</p>
                   <p>Location: {appointment.location}</p>
                 </div>
