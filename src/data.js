@@ -1,5 +1,15 @@
 export  const data=[
     {
+        "name": "Webinar",
+        "clg": "webinar",
+       
+    },
+    {
+        "name": "Seminar",
+        "clg": "seminar",
+       
+    },
+    {
         "name": "ITM Ayurvedic Medical College & Hospital Chehari Maharajganj",
         "clg": "ITM",
        
